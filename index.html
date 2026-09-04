@@ -365,6 +365,17 @@ edited
   .ov .mb .mini{font-size:11px;color:#7A8398;font-weight:700;}
   .ov .foot{font-size:12px;color:var(--ink-soft);font-weight:700;text-align:center;padding:6px 0 30px;}
 
+  .ov .mb .grp.pick,.ov .mb .grp .opts div.pick{cursor:pointer;border-radius:8px;}
+  .ov .mb .grp .opts div.pick{margin:0 -6px;padding:1px 6px;}
+  .ov .mb .grp.pick:hover,.ov .mb .grp .opts div.pick:hover{background:#FFF3EE;}
+  dialog.editor .lg-note{font-weight:700;color:var(--ink-soft);margin-left:auto;font-size:11.5px;}
+  dialog.editor .dgrp + .dgrp{margin-top:10px;}
+  dialog.editor .dgh{font-size:12.5px;font-weight:900;color:var(--ink);margin-bottom:6px;display:flex;align-items:baseline;gap:8px;}
+  dialog.editor .dgh small{font-weight:700;color:var(--ink-soft);font-size:11px;}
+  dialog.editor .opts.inline .opt .t small{display:inline;margin-left:5px;font-variant-numeric:tabular-nums;}
+  dialog.editor #tempSet{display:none;}
+  dialog.editor #tempSet.on{display:block;}
+
   /* 안내 배너 / 토스트 */
   .ov .banner{
     background:#FFF3DC;border:2px solid var(--sun);border-radius:14px;padding:10px 14px;
@@ -543,7 +554,7 @@ edited
     <div class="leaf">🍂</div>
     <div class="eyebrow"><span class="dot"></span>기업복지사업실 · 2026 하반기 워크샵</div>
     <h1 class="display">브런치 메뉴 <span class="hl">주문 취합</span></h1>
-    <p class="sub">09. 11. (금) 10:15 위커파크웨스트 브런치 · 원하는 샌드위치를 골라 기재해 주세요.</p>
+    <p class="sub">09. 11. (금) 10:15 위커파크웨스트 브런치 · 원하는 샌드위치와 음료를 골라 기재해 주세요.</p>
     <div class="meta">
       <div class="pill sun"><span class="ico">📅</span>기재 마감 2026. 09. 08. (화)<span id="dday" style="margin-left:4px;color:#C24A2C"></span></div>
       <div class="pill teal"><span class="ico">👥</span><span id="doneCount">0</span> / 13명 완료</div>
@@ -557,6 +568,7 @@ edited
     <ul>
       <li><span class="bang">!</span><span>원하시는 <b>샌드위치</b>를 기재해 주세요. <b>SET MENU 기준</b>으로 주문할 예정입니다.</span></li>
       <li class="set"><i>SET MENU</i> = <span>샌드위치</span> + <span>프렌치프라이</span> + <span>캔음료</span></li>
+      <li><span class="bang">!</span><span>음료는 세트 캔음료 외에 <b>COFFEE / NON COFFEE</b> 메뉴도 선택할 수 있습니다. 원하는 음료를 골라 주세요.</span></li>
       <li><span class="bang">!</span><span>기재기간 : <b>2026-09-08</b> 까지</span></li>
       <li><span class="bang">!</span><span>본인 이름을 누르면 기재할 수 있고, 저장 후에도 <b>언제든 수정</b>할 수 있습니다.</span></li>
     </ul>
@@ -576,7 +588,7 @@ edited
   <section class="menuboard" id="menuboard">
     <div class="mb-head">
       <h2>🥪 메뉴판<span class="cnt">위커파크웨스트</span></h2>
-      <span class="tip">SANDWICH 항목을 누르면 바로 기재할 수 있어요</span>
+      <span class="tip">샌드위치·음료 항목을 누르면 바로 기재할 수 있어요</span>
     </div>
     <div class="mb">
       <div class="col">
@@ -614,13 +626,13 @@ edited
           <h3 class="line">Coffee</h3>
           <div class="grp">
             <div class="row"><span class="en">Black</span><span class="pr">5,5</span></div>
-            <div class="opts"><div><span>Espresso</span><span class="ko">에스프레소</span></div><div><span>Americano</span><span class="ko">아메리카노</span></div></div>
+            <div class="opts"><div class="pick" data-dr="espresso"><span>Espresso</span><span class="ko">에스프레소</span></div><div class="pick" data-dr="americano"><span>Americano</span><span class="ko">아메리카노</span></div></div>
           </div>
           <div class="grp">
             <div class="row"><span class="en">White</span><span class="pr">6,0</span></div>
-            <div class="opts"><div><span>Cafe Latte</span><span class="ko">카페 라떼</span></div><div><span>Cappuccino</span><span class="ko">카푸치노</span></div><div><span>Magic</span><span class="ko">매직</span></div></div>
+            <div class="opts"><div class="pick" data-dr="latte"><span>Cafe Latte</span><span class="ko">카페 라떼</span></div><div class="pick" data-dr="cappuccino"><span>Cappuccino</span><span class="ko">카푸치노</span></div><div class="pick" data-dr="magic"><span>Magic</span><span class="ko">매직</span></div></div>
           </div>
-          <div class="grp">
+          <div class="grp pick" data-dr="vanillalatte">
             <div class="row"><span class="en">Vanilla Bean Latte</span><span class="pr">6,8</span></div>
             <div class="ko">바닐라빈 라떼</div>
           </div>
@@ -644,11 +656,12 @@ edited
         </div>
         <div>
           <h3 class="line">Non Coffee</h3>
-          <div class="item"><div><div class="en">Matcha Latte</div><div class="ko">말차 라떼</div></div><div class="pr">7,0</div></div>
-          <div class="item"><div><div class="en">Decaf Tea</div><div class="ko">디카페인 티</div><div class="ds">MINT MELANGE 민트멜랑지 · APPLE BLEND SPECIAL 애플 블렌드</div></div><div class="pr">6,5</div></div>
-          <div class="item"><div><div class="en">Lemonade</div><div class="ko">레몬에이드</div></div><div class="pr">7,0</div></div>
-          <div class="item"><div><div class="en">Peach Earl Grey Ice Tea</div><div class="ko">피치 얼그레이 아이스티</div></div><div class="pr">7,0</div></div>
-          <div class="item"><div><div class="en">Cola, Zero Cola, Sprite</div><div class="ko">콜라, 제로 콜라, 스프라이트</div><div class="ds">SET MENU 캔음료는 이 중에서 선택</div></div><div class="pr">4,0</div></div>
+          <div class="item pick" data-dr="matcha"><div><div class="en">Matcha Latte</div><div class="ko">말차 라떼</div></div><div class="pr">7,0</div></div>
+          <div class="item pick" data-dr="decaf_mint"><div><div class="en">Decaf Tea</div><div class="ko">디카페인 티 · 민트멜랑지</div><div class="ds">MINT MELANGE</div></div><div class="pr">6,5</div></div>
+          <div class="item pick" data-dr="decaf_apple"><div><div class="en">Decaf Tea</div><div class="ko">디카페인 티 · 애플 블렌드</div><div class="ds">APPLE BLEND SPECIAL</div></div><div class="pr">6,5</div></div>
+          <div class="item pick" data-dr="lemonade"><div><div class="en">Lemonade</div><div class="ko">레몬에이드</div></div><div class="pr">7,0</div></div>
+          <div class="item pick" data-dr="peachtea"><div><div class="en">Peach Earl Grey Ice Tea</div><div class="ko">피치 얼그레이 아이스티</div></div><div class="pr">7,0</div></div>
+          <div class="item pick" data-dr="cola"><div><div class="en">Cola, Zero Cola, Sprite</div><div class="ko">콜라, 제로 콜라, 스프라이트</div><div class="ds">SET MENU 캔음료는 이 중에서 선택 (세트에 포함)</div></div><div class="pr">4,0</div></div>
         </div>
       </div>
     </div>
@@ -672,8 +685,12 @@ edited
       <div class="opts inline" id="sauceOpts"></div>
     </fieldset>
     <fieldset>
-      <legend>🥤 캔음료 <span class="req">필수</span></legend>
-      <div class="opts inline" id="drinkOpts"></div>
+      <legend>🥤 음료 <span class="req">필수</span><span class="lg-note">세트 캔음료 또는 COFFEE / NON COFFEE 중 하나</span></legend>
+      <div id="drinkOpts"></div>
+    </fieldset>
+    <fieldset id="tempSet">
+      <legend>🌡️ HOT / ICE <span class="req">필수</span></legend>
+      <div class="opts inline" id="tempOpts"></div>
     </fieldset>
     <fieldset>
       <legend>📝 요청사항 <span style="font-weight:700">선택</span></legend>
@@ -718,7 +735,25 @@ edited
     {id:"chicken",     en:"Chicken Breast",             ko:"닭가슴살 샌드위치",            price:"15,0"}
   ];
   var SAUCES = [["classic","클래식"],["hotchilli","핫칠리페퍼"],["truffle","트러플마요"],["garlic","갈릭마요"]];
-  var DRINKS = [["cola","콜라"],["zero","제로 콜라"],["sprite","스프라이트"]];
+  /* 음료: [id, 이름, 가격, HOT/ICE 선택 여부] */
+  var DRINK_GROUPS = [
+    {id:"can", label:"🥤 SET 캔음료", note:"세트에 포함", items:[
+      ["cola","콜라","",0],["zero","제로 콜라","",0],["sprite","스프라이트","",0]]},
+    {id:"coffee", label:"☕ COFFEE", note:"세트 캔음료 대신", items:[
+      ["espresso","에스프레소","5,5",1],["americano","아메리카노","5,5",1],["latte","카페 라떼","6,0",1],
+      ["cappuccino","카푸치노","6,0",1],["magic","매직","6,0",1],["vanillalatte","바닐라빈 라떼","6,8",1]]},
+    {id:"noncoffee", label:"🍵 NON COFFEE", note:"세트 캔음료 대신", items:[
+      ["matcha","말차 라떼","7,0",1],["decaf_mint","디카페인 티 · 민트멜랑지","6,5",1],["decaf_apple","디카페인 티 · 애플 블렌드","6,5",1],
+      ["lemonade","레몬에이드","7,0",0],["peachtea","피치 얼그레이 아이스티","7,0",0]]}
+  ];
+  var DRINKS = [];
+  DRINK_GROUPS.forEach(function(g){ g.items.forEach(function(it){ DRINKS.push(it); }); });
+  var TEMPS = [["hot","HOT"],["ice","ICE"]];
+  function drinkOf(id){ for (var i = 0; i < DRINKS.length; i++) if (DRINKS[i][0] === id) return DRINKS[i]; return null; }
+  function drinkLabel(d){
+    var dr = drinkOf(d.drink); if (!dr) return "";
+    return dr[1] + (dr[3] && d.temp ? " (" + labelOf(TEMPS, d.temp) + ")" : "");
+  }
   var DEADLINE = new Date(2026, 8, 8, 23, 59, 59);
   var LS_KEY = "brunch-orders-2026-09-11";
 
@@ -771,7 +806,7 @@ edited
     var sw = swById(d.sandwich);
     var parts = [sw ? sw.ko : ""];
     if (sw && sw.sauce && d.sauce) parts.push(labelOf(SAUCES, d.sauce));
-    if (d.drink) parts.push(labelOf(DRINKS, d.drink));
+    if (d.drink) parts.push(drinkLabel(d));
     if (d.memo) parts.push("📝 " + d.memo);
     return parts.filter(Boolean).join(" · ");
   }
@@ -798,7 +833,7 @@ edited
       var sw = swById(d.sandwich);
       var key = sw.ko + (sw.sauce && d.sauce ? " (" + labelOf(SAUCES, d.sauce) + ")" : "");
       counts[key] = (counts[key] || 0) + 1;
-      if (d.drink) { var dk = labelOf(DRINKS, d.drink); dcounts[dk] = (dcounts[dk] || 0) + 1; }
+      if (d.drink) { var dk = drinkLabel(d); dcounts[dk] = (dcounts[dk] || 0) + 1; }
     });
     var keys = Object.keys(counts), dkeys = Object.keys(dcounts);
     $("tally").hidden = keys.length === 0;
@@ -809,11 +844,11 @@ edited
     var b = e.target.closest(".person"); if (!b) return;
     openEditor(b.getAttribute("data-pid"));
   });
-  document.querySelectorAll(".mb .item.pick").forEach(function(el){
+  document.querySelectorAll(".mb .pick").forEach(function(el){
     el.addEventListener("click", function(){
-      var sw = el.getAttribute("data-sw");
+      var sw = el.getAttribute("data-sw"), dr = el.getAttribute("data-dr");
       if (!editingPid) { showToast("먼저 위 명단에서 본인 이름을 눌러 주세요"); $("roster").scrollIntoView({behavior:"smooth", block:"start"}); return; }
-      openEditor(editingPid, sw);
+      openEditor(editingPid, sw, dr);
     });
   });
 
@@ -825,7 +860,7 @@ edited
       return '<label class="opt"><input type="radio" name="' + name + '" value="' + id + '"' + (checked === id ? " checked" : "") + '><span class="t">' + esc(label) + '</span></label>';
     }).join("");
   }
-  function openEditor(id, presetSw){
+  function openEditor(id, presetSw, presetDr){
     editingPid = id;
     var idx = parseInt(id.slice(1), 10) - 1;
     var d = state[id] || {};
@@ -837,11 +872,19 @@ edited
         '<span class="p">' + s.price + '</span></label>';
     }).join("");
     $("sauceOpts").innerHTML = radioHtml("sauce", SAUCES, d.sauce);
-    $("drinkOpts").innerHTML = radioHtml("drink", DRINKS, d.drink);
+    var dr = presetDr || d.drink || "";
+    $("drinkOpts").innerHTML = DRINK_GROUPS.map(function(g){
+      return '<div class="dgrp"><div class="dgh">' + g.label + '<small>' + esc(g.note) + '</small></div><div class="opts inline">' +
+        g.items.map(function(it){
+          return '<label class="opt"><input type="radio" name="drink" value="' + it[0] + '"' + (dr === it[0] ? " checked" : "") + '>' +
+            '<span class="t">' + esc(it[1]) + (it[2] ? '<small>' + it[2] + '</small>' : "") + '</span></label>';
+        }).join("") + '</div></div>';
+    }).join("");
+    $("tempOpts").innerHTML = radioHtml("temp", TEMPS, d.temp);
     $("edMemo").value = d.memo || "";
     $("edDelete").hidden = !isDone(d);
     $("edErr").className = "err";
-    syncSauce();
+    syncSauce(); syncTemp();
     if (typeof editor.showModal === "function") editor.showModal(); else editor.setAttribute("open", "");
   }
   function syncSauce(){
@@ -849,7 +892,14 @@ edited
     var s = swById(v);
     $("sauceSet").classList.toggle("on", !!(s && s.sauce));
   }
-  form.addEventListener("change", function(e){ if (e.target.name === "sandwich") syncSauce(); });
+  function syncTemp(){
+    var dr = drinkOf(form.drink && form.drink.value);
+    $("tempSet").classList.toggle("on", !!(dr && dr[3]));
+  }
+  form.addEventListener("change", function(e){
+    if (e.target.name === "sandwich") syncSauce();
+    if (e.target.name === "drink") syncTemp();
+  });
   function closeEditor(){ if (editor.open) editor.close(); }
   $("edClose").addEventListener("click", closeEditor);
   $("edCancel").addEventListener("click", closeEditor);
@@ -865,9 +915,12 @@ edited
     var sauce = sw.sauce ? (form.sauce.value || "") : "";
     if (sw.sauce && !sauce) return showErr("크로아상 스매시 버거는 소스를 골라 주세요.");
     var drink = form.drink.value || "";
-    if (!drink) return showErr("캔음료를 선택해 주세요.");
+    if (!drink) return showErr("음료를 선택해 주세요.");
+    var drInfo = drinkOf(drink);
+    var temp = (drInfo && drInfo[3]) ? (form.temp.value || "") : "";
+    if (drInfo && drInfo[3] && !temp) return showErr("HOT / ICE 를 골라 주세요.");
     var idx = parseInt(editingPid.slice(1), 10) - 1;
-    var data = { name: PEOPLE[idx], sandwich: swId, sauce: sauce, drink: drink, memo: $("edMemo").value.trim().slice(0, 200), updatedAt: new Date().toISOString() };
+    var data = { name: PEOPLE[idx], sandwich: swId, sauce: sauce, drink: drink, temp: temp, memo: $("edMemo").value.trim().slice(0, 200), updatedAt: new Date().toISOString() };
     var btn = $("edSave"); btn.disabled = true;
     Promise.resolve(store.set(editingPid, data)).then(function(){
       btn.disabled = false; closeEditor();
