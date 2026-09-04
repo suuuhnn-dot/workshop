@@ -569,6 +569,7 @@ edited
       <li><span class="bang">!</span><span>원하시는 <b>샌드위치</b>를 기재해 주세요. <b>SET MENU 기준</b>으로 주문할 예정입니다.</span></li>
       <li class="set"><i>SET MENU</i> = <span>샌드위치</span> + <span>프렌치프라이</span> + <span>캔음료</span></li>
       <li><span class="bang">!</span><span>음료는 세트 캔음료 외에 <b>COFFEE / NON COFFEE</b> 메뉴도 선택할 수 있습니다. 원하는 음료를 골라 주세요.</span></li>
+      <li><span class="bang">!</span><span>프렌치프라이는 세트에 포함되어 있습니다. 원치 않으면 기재 시 <b>빼주세요</b>를 선택해 주세요.</span></li>
       <li><span class="bang">!</span><span>기재기간 : <b>2026-09-08</b> 까지</span></li>
       <li><span class="bang">!</span><span>본인 이름을 누르면 기재할 수 있고, 저장 후에도 <b>언제든 수정</b>할 수 있습니다.</span></li>
     </ul>
@@ -622,8 +623,10 @@ edited
           <div class="setline"><span>• SET MENU <small>샌드위치 + 프렌치프라이 + 캔음료</small></span><span>-3,0</span></div>
           <div class="setline" style="margin-top:6px"><span>* 깜파뉴 추가</span><span>+1,0</span></div>
         </div>
+      </div>
+      <div class="col">
         <div>
-          <h3 class="line">Coffee</h3>
+          <h3>Coffee</h3>
           <div class="grp">
             <div class="row"><span class="en">Black</span><span class="pr">5,5</span></div>
             <div class="opts"><div class="pick" data-dr="espresso"><span>Espresso</span><span class="ko">에스프레소</span></div><div class="pick" data-dr="americano"><span>Americano</span><span class="ko">아메리카노</span></div></div>
@@ -636,23 +639,6 @@ edited
             <div class="row"><span class="en">Vanilla Bean Latte</span><span class="pr">6,8</span></div>
             <div class="ko">바닐라빈 라떼</div>
           </div>
-        </div>
-      </div>
-      <div class="col">
-        <div>
-          <h3>Pasta</h3>
-          <div class="item"><div><div class="en">Bacon Mushroom Cream Pasta</div><div class="ko">베이컨 머쉬룸 크림 파스타</div><div class="ds">베이컨, 양송이, 표고버섯, 크림 소스, 그라나파다노, 파슬리</div></div><div class="pr">21,0</div></div>
-        </div>
-        <div>
-          <h3 class="line">Side</h3>
-          <div class="item"><div><div class="en">Potato &amp; Green Onion Soup</div><div class="ko">대파감자스프</div></div><div class="pr">6,5</div></div>
-          <div class="item"><div><div class="en">Tomato Soup</div><div class="ko">토마토스프</div></div><div class="pr">5,0</div></div>
-          <div class="item"><div><div class="en">French Fries</div><div class="ko">감자튀김</div></div><div class="pr">4,5</div></div>
-          <div class="item"><div><div class="en">Coleslaw / Carrot Salad</div><div class="ko">코울슬로 / 당근라페</div></div><div class="pr">4,0</div></div>
-        </div>
-        <div>
-          <h3>Beer</h3>
-          <div class="item"><div><div class="en">Draft-Budweiser</div><div class="ko">생맥주 버드와이저</div></div><div class="pr">7,0</div></div>
         </div>
         <div>
           <h3 class="line">Non Coffee</h3>
@@ -683,6 +669,10 @@ edited
     <fieldset id="sauceSet">
       <legend>🧂 소스 (크로아상 스매시 버거) <span class="req">필수</span></legend>
       <div class="opts inline" id="sauceOpts"></div>
+    </fieldset>
+    <fieldset>
+      <legend>🍟 프렌치프라이 <span class="req">필수</span><span class="lg-note">세트에 포함 · 원치 않으면 빼주세요</span></legend>
+      <div class="opts inline" id="friesOpts"></div>
     </fieldset>
     <fieldset>
       <legend>🥤 음료 <span class="req">필수</span><span class="lg-note">세트 캔음료 또는 COFFEE / NON COFFEE 중 하나</span></legend>
@@ -749,6 +739,7 @@ edited
   var DRINKS = [];
   DRINK_GROUPS.forEach(function(g){ g.items.forEach(function(it){ DRINKS.push(it); }); });
   var TEMPS = [["hot","HOT"],["ice","ICE"]];
+  var FRIES = [["yes","포함 (기본)"],["no","빼주세요"]];
   function drinkOf(id){ for (var i = 0; i < DRINKS.length; i++) if (DRINKS[i][0] === id) return DRINKS[i]; return null; }
   function drinkLabel(d){
     var dr = drinkOf(d.drink); if (!dr) return "";
@@ -807,6 +798,7 @@ edited
     var parts = [sw ? sw.ko : ""];
     if (sw && sw.sauce && d.sauce) parts.push(labelOf(SAUCES, d.sauce));
     if (d.drink) parts.push(drinkLabel(d));
+    if (d.fries === "no") parts.push("🍟 빼기");
     if (d.memo) parts.push("📝 " + d.memo);
     return parts.filter(Boolean).join(" · ");
   }
@@ -827,18 +819,21 @@ edited
     $("leftCount").textContent = done === PEOPLE.length ? "전원 완료 🎉" : (PEOPLE.length - done) + "명 남음";
     $("barFill").style.width = Math.round(done / PEOPLE.length * 100) + "%";
 
-    var counts = {}, dcounts = {};
+    var counts = {}, dcounts = {}, friesNo = 0, friesYes = 0;
     Object.keys(state).forEach(function(k){
       var d = state[k]; if (!isDone(d)) return;
       var sw = swById(d.sandwich);
       var key = sw.ko + (sw.sauce && d.sauce ? " (" + labelOf(SAUCES, d.sauce) + ")" : "");
       counts[key] = (counts[key] || 0) + 1;
       if (d.drink) { var dk = drinkLabel(d); dcounts[dk] = (dcounts[dk] || 0) + 1; }
+      if (d.fries === "no") friesNo++; else friesYes++;
     });
     var keys = Object.keys(counts), dkeys = Object.keys(dcounts);
     $("tally").hidden = keys.length === 0;
     $("tallyList").innerHTML = keys.map(function(k){ return "<li>🥪 " + esc(k) + " <b>" + counts[k] + "</b></li>"; }).join("") +
-      dkeys.map(function(k){ return "<li>🥤 " + esc(k) + " <b>" + dcounts[k] + "</b></li>"; }).join("");
+      dkeys.map(function(k){ return "<li>🥤 " + esc(k) + " <b>" + dcounts[k] + "</b></li>"; }).join("") +
+      (friesYes ? "<li>🍟 프렌치프라이 포함 <b>" + friesYes + "</b></li>" : "") +
+      (friesNo ? "<li>🍟 프렌치프라이 빼기 <b>" + friesNo + "</b></li>" : "");
   }
   $("roster").addEventListener("click", function(e){
     var b = e.target.closest(".person"); if (!b) return;
@@ -881,6 +876,7 @@ edited
         }).join("") + '</div></div>';
     }).join("");
     $("tempOpts").innerHTML = radioHtml("temp", TEMPS, d.temp);
+    $("friesOpts").innerHTML = radioHtml("fries", FRIES, d.fries || "yes");
     $("edMemo").value = d.memo || "";
     $("edDelete").hidden = !isDone(d);
     $("edErr").className = "err";
@@ -920,7 +916,8 @@ edited
     var temp = (drInfo && drInfo[3]) ? (form.temp.value || "") : "";
     if (drInfo && drInfo[3] && !temp) return showErr("HOT / ICE 를 골라 주세요.");
     var idx = parseInt(editingPid.slice(1), 10) - 1;
-    var data = { name: PEOPLE[idx], sandwich: swId, sauce: sauce, drink: drink, temp: temp, memo: $("edMemo").value.trim().slice(0, 200), updatedAt: new Date().toISOString() };
+    var fries = form.fries.value || "yes";
+    var data = { name: PEOPLE[idx], sandwich: swId, sauce: sauce, drink: drink, temp: temp, fries: fries, memo: $("edMemo").value.trim().slice(0, 200), updatedAt: new Date().toISOString() };
     var btn = $("edSave"); btn.disabled = true;
     Promise.resolve(store.set(editingPid, data)).then(function(){
       btn.disabled = false; closeEditor();
