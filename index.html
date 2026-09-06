@@ -741,7 +741,7 @@
   var DRINKS = [];
   DRINK_GROUPS.forEach(function(g){ g.items.forEach(function(it){ DRINKS.push(it); }); });
   var TEMPS = [["hot","HOT"],["ice","ICE"]];
-  var FRIES = [["yes","포함 (기본)"],["no","빼주세요"]];
+  var FRIES = [["yes","기본"],["no","빼주세요"]];
   function drinkOf(id){ for (var i = 0; i < DRINKS.length; i++) if (DRINKS[i][0] === id) return DRINKS[i]; return null; }
   function drinkLabel(d){
     var dr = drinkOf(d.drink); if (!dr) return "";
