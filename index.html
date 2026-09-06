@@ -741,7 +741,7 @@
   var DRINKS = [];
   DRINK_GROUPS.forEach(function(g){ g.items.forEach(function(it){ DRINKS.push(it); }); });
   var TEMPS = [["hot","HOT"],["ice","ICE"]];
-  var FRIES = [["yes","기본"],["no","빼주세요"]];
+  var FRIES = [["yes","포함"],["no","미포함"]];
   function drinkOf(id){ for (var i = 0; i < DRINKS.length; i++) if (DRINKS[i][0] === id) return DRINKS[i]; return null; }
   function drinkLabel(d){
     var dr = drinkOf(d.drink); if (!dr) return "";
@@ -810,7 +810,7 @@
     var parts = [sw ? sw.ko : ""];
     if (sw && sw.sauce && d.sauce) parts.push(labelOf(SAUCES, d.sauce));
     if (d.drink) parts.push(drinkLabel(d));
-    if (d.fries === "no") parts.push("🍟 빼기");
+    if (d.fries === "no") parts.push("🍟 미포함");
     if (d.memo) parts.push("📝 " + d.memo);
     return parts.filter(Boolean).join(" · ");
   }
@@ -845,7 +845,7 @@
     $("tallyList").innerHTML = keys.map(function(k){ return "<li>🥪 " + esc(k) + " <b>" + counts[k] + "</b></li>"; }).join("") +
       dkeys.map(function(k){ return "<li>🥤 " + esc(k) + " <b>" + dcounts[k] + "</b></li>"; }).join("") +
       (friesYes ? "<li>🍟 프렌치프라이 포함 <b>" + friesYes + "</b></li>" : "") +
-      (friesNo ? "<li>🍟 프렌치프라이 빼기 <b>" + friesNo + "</b></li>" : "");
+      (friesNo ? "<li>🍟 프렌치프라이 미포함 <b>" + friesNo + "</b></li>" : "");
   }
   $("roster").addEventListener("click", function(e){
     var b = e.target.closest(".person"); if (!b) return;
