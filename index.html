@@ -678,20 +678,16 @@
       <div class="opts inline" id="sauceOpts"></div>
     </fieldset>
     <fieldset>
-      <legend>🍟 프렌치프라이 <span class="req">필수</span><span class="lg-note">세트에 포함 · 원치 않으면 빼주세요</span></legend>
+      <legend>🍟 프렌치프라이</legend>
       <div class="opts inline" id="friesOpts"></div>
     </fieldset>
     <fieldset>
-      <legend>🥤 음료 <span class="req">필수</span><span class="lg-note">세트 캔음료 또는 COFFEE / NON COFFEE 중 하나</span></legend>
+      <legend>🥤 음료</legend>
       <div id="drinkOpts"></div>
     </fieldset>
     <fieldset id="tempSet">
       <legend>🌡️ HOT / ICE <span class="req">필수</span></legend>
       <div class="opts inline" id="tempOpts"></div>
-    </fieldset>
-    <fieldset>
-      <legend>📝 요청사항 <span style="font-weight:700">선택</span></legend>
-      <textarea id="edMemo" placeholder="예) 할라피뇨 빼주세요 / 깜파뉴 추가"></textarea>
     </fieldset>
     <p class="err" id="edErr"></p>
     <div class="acts">
@@ -734,12 +730,12 @@
   var SAUCES = [["classic","클래식"],["hotchilli","핫칠리페퍼"],["truffle","트러플마요"],["garlic","갈릭마요"]];
   /* 음료: [id, 이름, 가격, HOT/ICE 선택 여부] */
   var DRINK_GROUPS = [
-    {id:"can", label:"🥤 SET 캔음료", note:"세트에 포함", items:[
+    {id:"can", label:"🥤 캔음료", note:"", items:[
       ["cola","콜라","",0],["zero","제로 콜라","",0],["sprite","스프라이트","",0]]},
-    {id:"coffee", label:"☕ COFFEE", note:"세트 캔음료 대신", items:[
+    {id:"coffee", label:"☕ COFFEE", note:"", items:[
       ["espresso","에스프레소","5,5",1],["americano","아메리카노","5,5",1],["latte","카페 라떼","6,0",1],
       ["cappuccino","카푸치노","6,0",1],["magic","매직","6,0",1],["vanillalatte","바닐라빈 라떼","6,8",1]]},
-    {id:"noncoffee", label:"🍵 NON COFFEE", note:"세트 캔음료 대신", items:[
+    {id:"noncoffee", label:"🍵 NON COFFEE", note:"", items:[
       ["matcha","말차 라떼","7,0",1],["decaf_mint","디카페인 티 · 민트멜랑지","6,5",1],["decaf_apple","디카페인 티 · 애플 블렌드","6,5",1],
       ["lemonade","레몬에이드","7,0",0],["peachtea","피치 얼그레이 아이스티","7,0",0]]}
   ];
@@ -887,7 +883,7 @@
     $("sauceOpts").innerHTML = radioHtml("sauce", SAUCES, d.sauce);
     var dr = presetDr || d.drink || "";
     $("drinkOpts").innerHTML = DRINK_GROUPS.map(function(g){
-      return '<div class="dgrp"><div class="dgh">' + g.label + '<small>' + esc(g.note) + '</small></div><div class="opts inline">' +
+      return '<div class="dgrp"><div class="dgh">' + g.label + (g.note ? '<small>' + esc(g.note) + '</small>' : '') + '</div><div class="opts inline">' +
         g.items.map(function(it){
           return '<label class="opt"><input type="radio" name="drink" value="' + it[0] + '"' + (dr === it[0] ? " checked" : "") + '>' +
             '<span class="t">' + esc(it[1]) + (it[2] ? '<small>' + it[2] + '</small>' : "") + '</span></label>';
@@ -895,7 +891,6 @@
     }).join("");
     $("tempOpts").innerHTML = radioHtml("temp", TEMPS, d.temp);
     $("friesOpts").innerHTML = radioHtml("fries", FRIES, d.fries || "yes");
-    $("edMemo").value = d.memo || "";
     $("edDelete").hidden = !isDone(d);
     $("edErr").className = "err";
     syncSauce(); syncTemp();
@@ -936,7 +931,7 @@
     if (drInfo && drInfo[3] && !temp) return showErr("HOT / ICE 를 골라 주세요.");
     var idx = parseInt(editingPid.slice(1), 10) - 1;
     var fries = form.fries.value || "yes";
-    var data = { name: PEOPLE[idx], sandwich: swId, sauce: sauce, drink: drink, temp: temp, fries: fries, memo: $("edMemo").value.trim().slice(0, 200), updatedAt: new Date().toISOString() };
+    var data = { name: PEOPLE[idx], sandwich: swId, sauce: sauce, drink: drink, temp: temp, fries: fries, memo: "", updatedAt: new Date().toISOString() };
     var btn = $("edSave"); btn.disabled = true;
     Promise.resolve(store.set(editingPid, data)).then(function(){
       btn.disabled = false; closeEditor();
