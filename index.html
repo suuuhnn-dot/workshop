@@ -287,8 +287,8 @@
   }
   .ov .person.done .chk{background:#178F79;border-color:#178F79;}
   .ov .person .who{min-width:0;}
-  .ov .person .nm{font-weight:800;font-size:16px;letter-spacing:-.2px;}
-  .ov .person .pick{font-size:12.5px;color:var(--ink-soft);font-weight:700;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .ov .person .nm{display:block;font-weight:800;font-size:16px;letter-spacing:-.2px;line-height:1.2;}
+  .ov .person .pick{display:block;font-size:11.5px;color:var(--ink-soft);font-weight:700;margin-top:3px;line-height:1.35;white-space:normal;word-break:keep-all;overflow-wrap:anywhere;}
   .ov .person.done .pick{color:#0F6B5A;}
   .ov .person .st{
     font-size:11.5px;font-weight:900;border-radius:100px;padding:3px 9px;white-space:nowrap;
@@ -810,7 +810,7 @@
     var parts = [sw ? sw.ko : ""];
     if (sw && sw.sauce && d.sauce) parts.push(labelOf(SAUCES, d.sauce));
     if (d.drink) parts.push(drinkLabel(d));
-    if (d.fries === "no") parts.push("🍟 미포함");
+    parts.push(d.fries === "no" ? "🍟 미포함" : "🍟 포함");
     if (d.memo) parts.push("📝 " + d.memo);
     return parts.filter(Boolean).join(" · ");
   }
