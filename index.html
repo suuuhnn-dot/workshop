@@ -378,11 +378,17 @@
   dialog.editor #tempSet{display:none;}
   dialog.editor #tempSet.on{display:block;}
 
-  body.closed .ov .person{cursor:not-allowed;box-shadow:none;transform:none;opacity:.9;}
-  body.closed .ov .person:hover{transform:none;box-shadow:none;}
-  body.closed .ov .mb .pick{cursor:not-allowed;}
-  body.closed .ov .mb .pick:hover{background:transparent;}
-  body.closed .ov .hint{display:none;}
+  body.closed #view-order .ov .person{cursor:not-allowed;box-shadow:none;transform:none;opacity:.9;}
+  body.closed #view-order .ov .person:hover{transform:none;box-shadow:none;}
+  body.closed #view-order .ov .mb .pick{cursor:not-allowed;}
+  body.closed #view-order .ov .mb .pick:hover{background:transparent;}
+  body.closed #view-order .ov .hint{display:none;}
+  #view-movie.closed .ov .person{cursor:not-allowed;box-shadow:none;transform:none;opacity:.9;}
+  #view-movie.closed .ov .person:hover{transform:none;box-shadow:none;}
+  #view-movie.closed .ov .hint{display:none;}
+  #view-movie{width:100%;display:flex;justify-content:center;padding:0 12px;}
+  #view-movie[hidden]{display:none!important;}
+  #view-movie .ov .person .pick{white-space:pre-line;}
 
   /* 안내 배너 / 토스트 */
   .ov .banner{
@@ -459,7 +465,7 @@
     .ov .bar i,.toast,.ov .person{transition:none;}
   }
   @media print{
-    #view-order{display:none!important;}
+    #view-order,#view-movie{display:none!important;}
   }
 </style>
 </head>
@@ -530,7 +536,7 @@
     </div>
     <div class="item film">
       <div class="time">12:00<small>~ 15:10</small></div><div class="node"></div>
-      <div class="card"><div class="emoji">🎬</div><div class="txt"><strong>영화 「오디세이」 관람</strong><em>러닝타임 약 3시간 10분</em></div></div>
+      <div class="card"><div class="emoji">🎬</div><div class="txt"><strong>영화 「오디세이」 관람</strong><em>러닝타임 약 3시간 10분<a class="order-btn" href="#movie">주문하기</a></em></div></div>
     </div>
     <div class="item move">
       <div class="time">15:10<small>~ 15:30</small></div><div class="node"></div>
@@ -662,6 +668,64 @@
   <p class="foot">NHN PAYCO · 기업복지사업실 하반기 워크샵 · 2026.09.11 (금)</p>
 </div>
 
+<div id="view-movie" hidden>
+<div class="ov">
+  <a class="back" href="#">← 워크샵 포스터로 돌아가기</a>
+
+  <div class="ov-head">
+    <div class="leaf">🎬</div>
+    <div class="eyebrow"><span class="dot"></span>기업복지사업실 · 2026 하반기 워크샵</div>
+    <h1 class="display">영화관 메뉴 <span class="hl">주문 취합</span></h1>
+    <p class="sub">영화 「오디세이」 관람 중 드실 메뉴를 자유롭게 기재해 주세요.</p>
+    <div class="meta">
+      <div class="pill sun"><span class="ico">📅</span>기재 마감 2026. 09. 10. (목)<span id="dday2" style="margin-left:4px;color:#C24A2C"></span></div>
+      <div class="pill teal"><span class="ico">👥</span><span id="doneCount2">0</span> / 13명 완료</div>
+    </div>
+  </div>
+
+  <div id="closedNote2" class="banner bad" hidden>⏰ 기재 기간이 종료되었습니다. (2026-09-10 마감) 더 이상 기재·수정할 수 없습니다.</div>
+  <div id="banner2" class="banner" hidden></div>
+
+  <section class="rules">
+    <h2>⚠️ 유의사항<span class="rule"></span></h2>
+    <ul>
+      <li><span class="bang">!</span><span>기재기간 : <b>2026-09-10</b> 까지</span></li>
+      <li><span class="bang">!</span><span>본인 이름을 누르면 기재할 수 있고, 기간 내에는 <b>언제든 수정</b>할 수 있습니다.</span></li>
+      <li><span class="bang">!</span><span>영화관에서 먹고싶은 메뉴를 <b>자유롭게</b> 기재해 주세요.</span></li>
+      <li><span class="bang">!</span><span>메뉴를 기재하지 않을시 <b>드시지 않는것으로 파악</b>하고 별도로 주문하지 않습니다.</span></li>
+    </ul>
+  </section>
+
+  <section class="roster-sec">
+    <h2>✍️ 메뉴 기재<span class="rule"></span><span class="cnt" id="leftCount2"></span></h2>
+    <div class="bar"><i id="barFill2" style="width:0%"></i></div>
+    <div class="roster" id="roster2"></div>
+    <p class="hint">이름을 누르면 기재 창이 열립니다.</p>
+  </section>
+
+  <p class="foot">NHN PAYCO · 기업복지사업실 하반기 워크샵 · 2026.09.11 (금)</p>
+</div>
+
+<dialog class="editor" id="editor2">
+  <form method="dialog" id="editorForm2" novalidate>
+    <div class="dh">
+      <div class="name" id="edName2">이름<small>님의 영화관 메뉴</small></div>
+      <button type="button" class="x" id="edClose2" aria-label="닫기">×</button>
+    </div>
+    <fieldset>
+      <legend>🍿 먹고 싶은 메뉴</legend>
+      <textarea id="edText2" placeholder="예) 카라멜 팝콘 (L) + 콜라 (M)" rows="4"></textarea>
+    </fieldset>
+    <p class="err" id="edErr2"></p>
+    <div class="acts">
+      <button type="button" class="btn ghost" id="edDelete2" hidden>기재 삭제</button>
+      <button type="button" class="btn" id="edCancel2">취소</button>
+      <button type="submit" class="btn primary" id="edSave2">저장하기</button>
+    </div>
+  </form>
+</dialog>
+</div>
+
 <dialog class="editor" id="editor">
   <form method="dialog" id="editorForm" novalidate>
     <div class="dh">
@@ -771,11 +835,15 @@
 
   /* ── 뷰 전환 (#order) ── */
   function route(){
-    var order = location.hash === "#order" || location.hash.indexOf("#order") === 0 || location.hash === "#menuboard";
-    $("view-poster").hidden = order;
+    var hash = location.hash;
+    var movie = hash === "#movie";
+    var order = !movie && (hash === "#order" || hash.indexOf("#order") === 0 || hash === "#menuboard");
+    $("view-poster").hidden = order || movie;
     $("view-order").hidden = !order;
-    document.body.classList.toggle("in-order", order);
-    if (order) { if (location.hash === "#menuboard") { var mb = $("menuboard"); if (mb) mb.scrollIntoView(); } else window.scrollTo(0, 0); }
+    $("view-movie").hidden = !movie;
+    document.body.classList.toggle("in-order", order || movie);
+    if (order) { if (hash === "#menuboard") { var mb = $("menuboard"); if (mb) mb.scrollIntoView(); } else window.scrollTo(0, 0); }
+    if (movie) window.scrollTo(0, 0);
     fitPoster();
   }
   window.addEventListener("hashchange", route);
@@ -846,6 +914,7 @@
       dkeys.map(function(k){ return "<li>🥤 " + esc(k) + " <b>" + dcounts[k] + "</b></li>"; }).join("") +
       (friesYes ? "<li>🍟 프렌치프라이 포함 <b>" + friesYes + "</b></li>" : "") +
       (friesNo ? "<li>🍟 프렌치프라이 미포함 <b>" + friesNo + "</b></li>" : "");
+    renderMovie();
   }
   $("roster").addEventListener("click", function(e){
     var b = e.target.closest(".person"); if (!b) return;
@@ -954,8 +1023,97 @@
     clearTimeout(toastTimer); toastTimer = setTimeout(function(){ t.classList.remove("show"); }, 2600);
   }
   function banner(msg, bad){
-    var b = $("banner"); b.textContent = msg; b.hidden = !msg; b.className = "banner" + (bad ? " bad" : "");
+    ["banner", "banner2"].forEach(function(id){
+      var b = $(id); if (!b) return;
+      b.textContent = msg; b.hidden = !msg; b.className = "banner" + (bad ? " bad" : "");
+    });
   }
+
+  /* ═══════ 영화관 메뉴 (자유 기재) ═══════ */
+  var MOVIE_DEADLINE = new Date(Date.UTC(2026, 8, 10, 15, 0, 0)); /* 2026-09-11 00:00:00 KST 부터 수정 불가 */
+  var editingMid = null;
+  var editor2 = $("editor2"), form2 = $("editorForm2");
+  function mid(i){ return "m" + String(i + 1).padStart(2, "0"); }
+  function isClosedMovie(){ return Date.now() >= MOVIE_DEADLINE.getTime(); }
+  function applyClosedMovie(){
+    var closed = isClosedMovie();
+    $("view-movie").classList.toggle("closed", closed);
+    $("closedNote2").hidden = !closed;
+    if (closed) $("dday2").textContent = "마감";
+  }
+  (function(){
+    var kstDay = function(ms){ return Math.floor((ms + 9 * 3600000) / 86400000); };
+    var days = kstDay(MOVIE_DEADLINE.getTime() - 1) - kstDay(Date.now());
+    var el = $("dday2");
+    if (days > 0) el.textContent = "D-" + days;
+    else if (days === 0) el.textContent = "오늘 마감";
+    else el.textContent = "마감";
+    applyClosedMovie();
+    var left = MOVIE_DEADLINE.getTime() - Date.now();
+    if (left > 0 && left < 86400000) setTimeout(function(){ applyClosedMovie(); if (editor2.open) editor2.close(); showToast("기재 기간이 종료되었습니다"); }, left + 500);
+  })();
+  function isDoneMovie(d){ return !!(d && typeof d.text === "string" && d.text.trim()); }
+  function renderMovie(){
+    var roster = $("roster2");
+    var html = "", done = 0;
+    PEOPLE.forEach(function(name, i){
+      var id = mid(i), d = state[id], ok = isDoneMovie(d);
+      if (ok) done++;
+      html += '<button type="button" class="person' + (ok ? " done" : "") + '" data-mid="' + id + '" aria-label="' + esc(name) + (ok ? " 기재 완료, 수정하기" : " 기재하기") + '">' +
+        '<span class="chk" aria-hidden="true">' + (ok ? "✓" : "") + '</span>' +
+        '<span class="who"><span class="nm">' + esc(name) + '</span><span class="pick">' + (ok ? esc(d.text) : "아직 기재하지 않았어요") + '</span></span>' +
+        '<span class="st">' + (ok ? "완료" : "미기재") + '</span>' +
+      '</button>';
+    });
+    roster.innerHTML = html;
+    $("doneCount2").textContent = done;
+    $("leftCount2").textContent = done === PEOPLE.length ? "전원 완료 🎉" : (PEOPLE.length - done) + "명 남음";
+    $("barFill2").style.width = Math.round(done / PEOPLE.length * 100) + "%";
+  }
+  $("roster2").addEventListener("click", function(e){
+    var b = e.target.closest(".person"); if (!b) return;
+    openEditorMovie(b.getAttribute("data-mid"));
+  });
+  function openEditorMovie(id){
+    if (isClosedMovie()) { applyClosedMovie(); showToast("⏰ 기재 기간이 종료되어 수정할 수 없습니다"); return; }
+    editingMid = id;
+    var idx = parseInt(id.slice(1), 10) - 1;
+    var d = state[id] || {};
+    $("edName2").innerHTML = esc(PEOPLE[idx]) + "<small>님의 영화관 메뉴</small>";
+    $("edText2").value = d.text || "";
+    $("edDelete2").hidden = !isDoneMovie(d);
+    $("edErr2").className = "err";
+    if (typeof editor2.showModal === "function") editor2.showModal(); else editor2.setAttribute("open", "");
+    setTimeout(function(){ $("edText2").focus(); }, 50);
+  }
+  function closeEditorMovie(){ if (editor2.open) editor2.close(); }
+  function showErr2(msg){ var el = $("edErr2"); el.textContent = msg; el.className = "err on"; }
+  $("edClose2").addEventListener("click", closeEditorMovie);
+  $("edCancel2").addEventListener("click", closeEditorMovie);
+  editor2.addEventListener("click", function(e){ if (e.target === editor2) closeEditorMovie(); });
+  form2.addEventListener("submit", function(e){
+    e.preventDefault();
+    if (isClosedMovie()) { applyClosedMovie(); closeEditorMovie(); showToast("⏰ 기재 기간이 종료되어 저장할 수 없습니다"); return; }
+    var text = $("edText2").value.trim().slice(0, 300);
+    if (!text) return showErr2("먹고 싶은 메뉴를 적어 주세요.");
+    var idx = parseInt(editingMid.slice(1), 10) - 1;
+    var data = { name: PEOPLE[idx], kind: "movie", text: text, updatedAt: new Date().toISOString() };
+    var btn = $("edSave2"); btn.disabled = true;
+    Promise.resolve(store.set(editingMid, data)).then(function(){
+      btn.disabled = false; closeEditorMovie();
+      showToast("✅ " + PEOPLE[idx] + "님 기재 완료! 수정은 이름을 다시 누르면 돼요");
+    }).catch(function(err){
+      btn.disabled = false;
+      showErr2("저장하지 못했어요. 잠시 후 다시 시도해 주세요. (" + (err && err.code || "오류") + ")");
+    });
+  });
+  $("edDelete2").addEventListener("click", function(){
+    if (isClosedMovie()) { applyClosedMovie(); closeEditorMovie(); showToast("⏰ 기재 기간이 종료되어 삭제할 수 없습니다"); return; }
+    var idx = parseInt(editingMid.slice(1), 10) - 1;
+    if (!confirm(PEOPLE[idx] + "님의 기재 내용을 삭제할까요?")) return;
+    Promise.resolve(store.del(editingMid)).then(function(){ closeEditorMovie(); showToast("기재 내용을 삭제했어요"); })
+      .catch(function(){ showErr2("삭제하지 못했어요. 잠시 후 다시 시도해 주세요."); });
+  });
 
   /* ── 저장소: 공유 DB → 없으면 이 브라우저(localStorage) ── */
   function useLocal(){
