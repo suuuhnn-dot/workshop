@@ -668,6 +668,42 @@
   <p class="foot">NHN PAYCO · 기업복지사업실 하반기 워크샵 · 2026.09.11 (금)</p>
 </div>
 
+
+<dialog class="editor" id="editor">
+  <form method="dialog" id="editorForm" novalidate>
+    <div class="dh">
+      <div class="name" id="edName">이름<small>님의 브런치</small></div>
+      <button type="button" class="x" id="edClose" aria-label="닫기">×</button>
+    </div>
+    <fieldset>
+      <legend>🥪 샌드위치 <span class="req">필수</span></legend>
+      <div class="opts" id="swOpts"></div>
+    </fieldset>
+    <fieldset id="sauceSet">
+      <legend>🧂 소스 (크로아상 스매시 버거) <span class="req">필수</span></legend>
+      <div class="opts inline" id="sauceOpts"></div>
+    </fieldset>
+    <fieldset>
+      <legend>🍟 프렌치프라이</legend>
+      <div class="opts inline" id="friesOpts"></div>
+    </fieldset>
+    <fieldset>
+      <legend>🥤 음료</legend>
+      <div id="drinkOpts"></div>
+    </fieldset>
+    <fieldset id="tempSet">
+      <legend>🌡️ HOT / ICE <span class="req">필수</span></legend>
+      <div class="opts inline" id="tempOpts"></div>
+    </fieldset>
+    <p class="err" id="edErr"></p>
+    <div class="acts">
+      <button type="button" class="btn ghost" id="edDelete" hidden>기재 삭제</button>
+      <button type="button" class="btn" id="edCancel">취소</button>
+      <button type="submit" class="btn primary" id="edSave">저장하기</button>
+    </div>
+  </form>
+</dialog>
+</div>
 <div id="view-movie" hidden>
 <div class="ov">
   <a class="back" href="#">← 워크샵 포스터로 돌아가기</a>
@@ -721,42 +757,6 @@
       <button type="button" class="btn ghost" id="edDelete2" hidden>기재 삭제</button>
       <button type="button" class="btn" id="edCancel2">취소</button>
       <button type="submit" class="btn primary" id="edSave2">저장하기</button>
-    </div>
-  </form>
-</dialog>
-</div>
-
-<dialog class="editor" id="editor">
-  <form method="dialog" id="editorForm" novalidate>
-    <div class="dh">
-      <div class="name" id="edName">이름<small>님의 브런치</small></div>
-      <button type="button" class="x" id="edClose" aria-label="닫기">×</button>
-    </div>
-    <fieldset>
-      <legend>🥪 샌드위치 <span class="req">필수</span></legend>
-      <div class="opts" id="swOpts"></div>
-    </fieldset>
-    <fieldset id="sauceSet">
-      <legend>🧂 소스 (크로아상 스매시 버거) <span class="req">필수</span></legend>
-      <div class="opts inline" id="sauceOpts"></div>
-    </fieldset>
-    <fieldset>
-      <legend>🍟 프렌치프라이</legend>
-      <div class="opts inline" id="friesOpts"></div>
-    </fieldset>
-    <fieldset>
-      <legend>🥤 음료</legend>
-      <div id="drinkOpts"></div>
-    </fieldset>
-    <fieldset id="tempSet">
-      <legend>🌡️ HOT / ICE <span class="req">필수</span></legend>
-      <div class="opts inline" id="tempOpts"></div>
-    </fieldset>
-    <p class="err" id="edErr"></p>
-    <div class="acts">
-      <button type="button" class="btn ghost" id="edDelete" hidden>기재 삭제</button>
-      <button type="button" class="btn" id="edCancel">취소</button>
-      <button type="submit" class="btn primary" id="edSave">저장하기</button>
     </div>
   </form>
 </dialog>
