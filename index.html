@@ -714,18 +714,18 @@
     <h1 class="display">영화관 메뉴 <span class="hl">주문 취합</span></h1>
     <p class="sub">영화 「오디세이」 관람 중 드실 메뉴를 자유롭게 기재해 주세요.</p>
     <div class="meta">
-      <div class="pill sun"><span class="ico">📅</span>기재 마감 2026. 09. 10. (목)<span id="dday2" style="margin-left:4px;color:#C24A2C"></span></div>
+      <div class="pill sun"><span class="ico">📅</span>기재 마감 2026. 09. 09. (수)<span id="dday2" style="margin-left:4px;color:#C24A2C"></span></div>
       <div class="pill teal"><span class="ico">👥</span><span id="doneCount2">0</span> / 14명 완료</div>
     </div>
   </div>
 
-  <div id="closedNote2" class="banner bad" hidden>⏰ 기재 기간이 종료되었습니다. (2026-09-10 마감) 더 이상 기재·수정할 수 없습니다.</div>
+  <div id="closedNote2" class="banner bad" hidden>⏰ 기재 기간이 종료되었습니다. (2026-09-09 마감) 더 이상 기재·수정할 수 없습니다.</div>
   <div id="banner2" class="banner" hidden></div>
 
   <section class="rules">
     <h2>⚠️ 유의사항<span class="rule"></span></h2>
     <ul>
-      <li><span class="bang">!</span><span>기재기간 : <b>2026-09-10</b> 까지</span></li>
+      <li><span class="bang">!</span><span>기재기간 : <b>2026-09-09</b> 까지</span></li>
       <li><span class="bang">!</span><span>본인 이름을 누르면 기재할 수 있고, 기간 내에는 <b>언제든 수정</b>할 수 있습니다.</span></li>
       <li><span class="bang">!</span><span>영화관에서 먹고싶은 메뉴를 <b>자유롭게</b> 기재해 주세요.</span></li>
       <li><span class="bang">!</span><span>메뉴를 기재하지 않을시 <b>드시지 않는것으로 파악</b>하고 별도로 주문하지 않습니다.</span></li>
@@ -1030,7 +1030,7 @@
   }
 
   /* ═══════ 영화관 메뉴 (자유 기재) ═══════ */
-  var MOVIE_DEADLINE = new Date(Date.UTC(2026, 8, 10, 15, 0, 0)); /* 2026-09-11 00:00:00 KST 부터 수정 불가 */
+  var MOVIE_DEADLINE = new Date(Date.UTC(2026, 8, 9, 15, 0, 0)); /* 2026-09-10 00:00:00 KST 부터 수정 불가 */
   var editingMid = null;
   var editor2 = $("editor2"), form2 = $("editorForm2");
   function mid(i){ return "m" + String(i + 1).padStart(2, "0"); }
